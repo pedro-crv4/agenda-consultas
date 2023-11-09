@@ -1,4 +1,5 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from './users/entities/user.entity';
 
 export default TypeOrmModule.forRoot({
     type: 'mysql',
@@ -7,6 +8,6 @@ export default TypeOrmModule.forRoot({
     username: 'root',
     password: 'secret',
     database: 'appointments',
-    entities: [],
+    entities: [User],
     synchronize: true,
 });
