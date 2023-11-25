@@ -21,8 +21,8 @@ services:
     networks:
       - default
 
-  nestjs-app:
-    container_name: nestjs-app
+  express-app:
+    container_name: express-app
     depends_on:
       - mysql-db
     build:
@@ -31,7 +31,7 @@ services:
     restart: unless-stopped
     env_file: ./.env
     ports:
-      - 3001:3000
+      - 3000
     environment:
       - DB_HOST=$MYSQLDB_HOST
       - DB_USER=$MYSQLDB_USER

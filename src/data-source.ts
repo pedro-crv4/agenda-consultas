@@ -1,7 +1,8 @@
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './users/entities/user.entity';
+import "reflect-metadata"
+import { DataSource } from "typeorm"
+import { User } from "./entity/User"
 
-export default TypeOrmModule.forRoot({
+export const AppDataSource = new DataSource({
     type: 'mysql',
     host: 'mysql-db',
     port: 3306,
@@ -10,4 +11,4 @@ export default TypeOrmModule.forRoot({
     database: 'appointments',
     entities: [User],
     synchronize: true,
-});
+})
