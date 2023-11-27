@@ -10,7 +10,7 @@ Object.defineProperty(exports, "AppDataSource", {
 });
 require("reflect-metadata");
 const _typeorm = require("typeorm");
-const _User = require("./entity/User");
+const _User = require("./entities/User");
 const AppDataSource = new _typeorm.DataSource({
     type: 'mysql',
     host: 'mysql-db',

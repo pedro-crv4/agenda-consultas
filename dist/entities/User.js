@@ -31,9 +31,10 @@ function _ts_decorate(decorators, target, key, desc) {
 class User {
     constructor(){
         _define_property(this, "id", void 0);
-        _define_property(this, "firstName", void 0);
-        _define_property(this, "lastName", void 0);
-        _define_property(this, "age", void 0);
+        _define_property(this, "name", void 0);
+        _define_property(this, "email", void 0);
+        _define_property(this, "password", void 0);
+        _define_property(this, "date_of_birth", void 0);
     }
 }
 _ts_decorate([
@@ -41,13 +42,18 @@ _ts_decorate([
 ], User.prototype, "id", void 0);
 _ts_decorate([
     (0, _typeorm.Column)("varchar")
-], User.prototype, "firstName", void 0);
+], User.prototype, "name", void 0);
 _ts_decorate([
     (0, _typeorm.Column)("varchar")
-], User.prototype, "lastName", void 0);
+], User.prototype, "email", void 0);
 _ts_decorate([
-    (0, _typeorm.Column)("tinyint")
-], User.prototype, "age", void 0);
+    (0, _typeorm.Column)("varchar")
+], User.prototype, "password", void 0);
+_ts_decorate([
+    (0, _typeorm.Column)("varchar", {
+        length: 10
+    })
+], User.prototype, "date_of_birth", void 0);
 User = _ts_decorate([
     (0, _typeorm.Entity)()
 ], User);
