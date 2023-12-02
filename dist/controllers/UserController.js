@@ -12,17 +12,23 @@ _export(exports, {
     createUser: function() {
         return createUser;
     },
+    deleteUser: function() {
+        return deleteUser;
+    },
     findAll: function() {
         return findAll;
+    },
+    updateUser: function() {
+        return updateUser;
     }
 });
-const _datasource = require("../data-source");
-const _User = require("../entities/User");
-const userRepository = _datasource.AppDataSource.getRepository(_User.User);
+const _UserRepository = require("../repositories/UserRepository");
+const _UpdateUserDTO = require("../dtos/UpdateUserDTO");
+const _CreateUserDTO = require("../dtos/CreateUserDTO");
+const userRepository = new _UserRepository.UserRepository();
 const findAll = async (_, res)=>{
     try {
-        const users = await userRepository.find();
-        console.log(users);
+        const users = await userRepository.findAll();
         res.status(200).json(users);
     } catch (error) {
         console.error(error);
@@ -33,15 +39,33 @@ const findAll = async (_, res)=>{
 };
 const createUser = async (req, res)=>{
     try {
-        const user = await userRepository.save({
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password,
-            date_of_birth: req.body.date_of_birth
-        });
+        const data = new _CreateUserDTO.CreateUserDTO(req.body);
+        const user = await userRepository.create(data);
         res.status(200).json(user);
     } catch (error) {
         console.error(error);
+        res.status(500).json({
+            error: "Internal server error"
+        });
+    }
+};
+const updateUser = async (req, res)=>{
+    try {
+        await userRepository.update(+req.params.id, new _UpdateUserDTO.UpdateUserDTO(req.body));
+        res.status(200).json({
+            message: "User updated"
+        });
+    } catch (error) {
+        res.status(500).json({
+            error: "Internal server error"
+        });
+    }
+};
+const deleteUser = async (req, res)=>{
+    try {
+        await userRepository.delete(+req.params.id);
+        res.status(204).send();
+    } catch (error) {
         res.status(500).json({
             error: "Internal server error"
         });
