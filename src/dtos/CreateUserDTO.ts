@@ -1,13 +1,17 @@
-export class CreateUserDTO {
-    readonly name;
-    readonly email;
-    readonly password;
-    readonly date_of_birth;
+import { UserType } from '../entities/User';
 
-    constructor({ name, email, password, date_of_birth }) {
+export class CreateUserDTO {
+    readonly name: string;
+    readonly email: string;
+    readonly password: string;
+    readonly date_of_birth: string;
+    readonly type: UserType;
+
+    constructor({ name, email, password, date_of_birth, type }) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.date_of_birth = date_of_birth;
+        this.type = type;
     }
 }

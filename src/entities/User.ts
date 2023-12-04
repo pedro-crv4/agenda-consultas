@@ -1,5 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
 
+export enum UserType {
+    NORMAL = "normal",
+    DOCTOR = "doctor",
+    PACIENT = "pacient"
+}
+
 @Entity()
 export class User {
     @PrimaryGeneratedColumn()
@@ -16,4 +22,11 @@ export class User {
 
     @Column("varchar", { length: 10 })
     date_of_birth: string
+
+    @Column({
+        type: "enum",
+        enum: UserType,
+        default: UserType.NORMAL
+    })
+    type: UserType;
 }

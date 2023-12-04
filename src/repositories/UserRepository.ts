@@ -1,27 +1,33 @@
 import { AppDataSource } from '../data-source';
 import { CreateUserDTO } from '../dtos/CreateUserDTO';
 import { UpdateUserDTO } from '../dtos/UpdateUserDTO';
+import { Doctor } from '../entities/Doctor';
+import { Pacient } from '../entities/Pacient';
 import { User } from '../entities/User';
 import { hashValue } from '../utils/crypto';
 
 const db = AppDataSource.getRepository(User);
-
 export class UserRepository {
     async findAll() {
-        const results = await db.find();
-    
+        const results = await db.createQueryBuilder("user")
+                                .select(['user.id', 'user.name', 'user.email', 'user.date_of_birth', 'user.type'])
+                                .getMany();
+
         return results;
     }
 
     async create(userData: CreateUserDTO) {
         try {
-            const hashedPassword = await hashValue(userData.password);
+            const { name, password, email, date_of_birth, type } = userData;
+
+            const hashedPassword = await hashValue(password);
 
             const user = await db.save({
-                name: userData.name,
-                email: userData.email,
+                name,
+                email,
                 password: hashedPassword,
-                date_of_birth: userData.date_of_birth
+                date_of_birth,
+                type
             });
 
             return user;
