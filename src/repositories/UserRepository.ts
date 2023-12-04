@@ -7,6 +7,8 @@ import { User } from '../entities/User';
 import { hashValue } from '../utils/crypto';
 
 const db = AppDataSource.getRepository(User);
+const doctorRepository = AppDataSource.getRepository(Doctor);
+const pacientRepository = AppDataSource.getRepository(Pacient);
 export class UserRepository {
     async findAll() {
         const results = await db.createQueryBuilder("user")
@@ -29,6 +31,20 @@ export class UserRepository {
                 date_of_birth,
                 type
             });
+
+            if (type === 'doctor') {
+                const doctor = await doctorRepository.save({
+                    specialization: 'foo',
+                    user: user
+                });
+            }
+
+            if (type === 'pacient') {
+                const pacient = await pacientRepository.save({
+                    medical_history: '',
+                    user: user
+                });
+            }
 
             return user;
         } catch (error) {
