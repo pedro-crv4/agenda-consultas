@@ -7,15 +7,13 @@ export class Appointment {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column("int")
     @ManyToOne(() => Doctor, (doctor) => doctor.id)
     doctor: Doctor
 
-    @Column("int")
     @ManyToOne(() => Pacient, (pacient) => pacient.id)
     pacient: Pacient
 
-    @Column("date")
+    @Column("datetime")
     time: string;
 
     @Column("varchar")

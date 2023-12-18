@@ -2,6 +2,8 @@ import { UserRepository } from './../repositories/UserRepository';
 import { Request, Response } from 'express';
 import { UpdateUserDTO } from '../dtos/UpdateUserDTO';
 import { CreateUserDTO } from '../dtos/CreateUserDTO';
+import { compare } from 'bcrypt'
+import { hashValue } from '../utils/crypto';
 
 const userRepository = new UserRepository();
 
@@ -49,4 +51,22 @@ const deleteUser = async(req: Request, res: Response) => {
     }
 }
 
-export { findAll, createUser, updateUser, deleteUser }
+const login = async(req, res) => {
+    const user = await userRepository.find(req.body.email, 'email');
+
+    let password = '$2b$10$3hauAFuGH0rRgfqSSwsih.sPlPbKmxxLI9zcr8kI3VIEb54HdRnGC';
+
+    if (user) {
+        password = user.password;
+    }
+
+    const passwordMatch = await compare(req.body.password, password);
+
+    if (user && passwordMatch) {
+        res.status(200).send();
+    } else {
+        res.status(404).json({message: "Foo"});
+    }
+}
+
+export { findAll, createUser, updateUser, deleteUser, login }

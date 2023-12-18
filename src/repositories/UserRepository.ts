@@ -7,8 +7,10 @@ import { User } from '../entities/User';
 import { hashValue } from '../utils/crypto';
 
 const db = AppDataSource.getRepository(User);
-const doctorRepository = AppDataSource.getRepository(Doctor);
-const pacientRepository = AppDataSource.getRepository(Pacient);
+
+export const doctorRepository = AppDataSource.getRepository(Doctor);
+
+export const pacientRepository = AppDataSource.getRepository(Pacient);
 export class UserRepository {
     async findAll() {
         const results = await db.createQueryBuilder("user")
@@ -16,6 +18,14 @@ export class UserRepository {
                                 .getMany();
 
         return results;
+    }
+
+    async find(value: any ,field: string = 'id' ) {
+        const result = await db.createQueryBuilder("user")
+                                .where(`user.${field} = :id`, { id: value })
+                                .select(['user.id', 'user.name', 'user.password', 'user.email', 'user.date_of_birth', 'user.type'])
+                                .getOne();
+        return result;
     }
 
     async create(userData: CreateUserDTO) {

@@ -10,6 +10,6 @@ export class Doctor {
     specialization: string;
 
     @OneToOne(() => User)
-    @JoinColumn({ name: 'doctor_id' })
+    @JoinColumn({ name: 'user_id' })
     user: User;
 }

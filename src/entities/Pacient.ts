@@ -10,6 +10,6 @@ export class Pacient {
     medical_history: string;
 
     @OneToOne(() => User)
-    @JoinColumn({ name: 'pacient_id' })
+    @JoinColumn({ name: 'user_id' })
     user: User;
 }
