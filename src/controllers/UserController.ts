@@ -3,7 +3,8 @@ import { Request, Response } from 'express';
 import { UpdateUserDTO } from '../dtos/UpdateUserDTO';
 import { CreateUserDTO } from '../dtos/CreateUserDTO';
 import { compare } from 'bcrypt'
-import { hashValue } from '../utils/crypto';
+import jsonwebtoken from 'jsonwebtoken';
+import { SECRET_KEY } from '../middlewares/auth';
 
 const userRepository = new UserRepository();
 
@@ -62,10 +63,23 @@ const login = async(req, res) => {
 
     const passwordMatch = await compare(req.body.password, password);
 
-    if (user && passwordMatch) {
-        res.status(200).send();
-    } else {
-        res.status(404).json({message: "Foo"});
+    if (!user || !passwordMatch ) {
+        return res.status(401).send('Credenciais inválidas');
+    }
+
+    try {
+        const token = jsonwebtoken.sign(
+            { sub: user.email },
+            iss: 'agenda-consultas',
+            aud: '',
+            SECRET_KEY,
+            { expiresIn: '60m' }
+        );
+
+        return res.status(200).json({ data: { user: user.email, token } });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json(error);
     }
 }
 
