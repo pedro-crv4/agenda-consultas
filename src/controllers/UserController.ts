@@ -69,9 +69,11 @@ const login = async(req, res) => {
 
     try {
         const token = jsonwebtoken.sign(
-            { sub: user.email },
-            iss: 'agenda-consultas',
-            aud: '',
+            { 
+                sub: user.email,
+                iss: 'agenda-consultas',
+                aud: ''
+            },
             SECRET_KEY,
             { expiresIn: '60m' }
         );

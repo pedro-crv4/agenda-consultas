@@ -29,6 +29,7 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: unless-stopped
+    command: npm run dev
     env_file: ./.env
     ports:
       - 3001:3000
